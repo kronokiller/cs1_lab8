@@ -210,7 +210,10 @@ def makeStackedImages(topImage, bottomImage):
     Returns:
         The graphics image formed by stacking the two images
     """
-    return "Needs to be implemented"
+    resultImage = emptyImage(len(topImage) + len(bottomeImage), max(len(bottomImage), len(bottomImage)))
+    resultImage = makePIP(makePIP(resultImage, topImage, 0. 0), bottomImage, len(topImage), 0)
+    
+    return resultImage
 
 
 def pixelMapper(image, rgbFunction):
