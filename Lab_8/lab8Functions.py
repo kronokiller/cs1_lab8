@@ -192,9 +192,12 @@ def displayFramedImage(image, frameSize, frameColor):
     Returns:
         None
     """
-    # remove pass when function is implemented
-    pass
-
+    resultImage = emptyImage(len(image) + 2 * frameSize, len(image[0] + 2 * framSize))
+    resultImage(:, :) = frameColor
+    resultImage = makePIP(resultImage, image, frameSize, frameSize)
+    
+    displayImage(resultImage)
+ 
 
 def makeStackedImages(topImage, bottomImage):
     """
