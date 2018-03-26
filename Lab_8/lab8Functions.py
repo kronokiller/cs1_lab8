@@ -194,7 +194,7 @@ def displayFramedImage(image, frameSize, frameColor):
     Returns:
         None
     """                       
-    resultImage = emptyImage(len(image) + 2 * frameSize, len(image[0] + 2 * framSize))
+    resultImage = emptyImage(len(image)) + 2 * frameSize, len(image[0]) + 2 * framSize))
     resultImage(:, :, 0:3) = frameColor
     resultImage = makePIP(resultImage, image, frameSize, frameSize)
     
