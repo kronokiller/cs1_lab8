@@ -19,24 +19,24 @@ billy = misc.imread("billy.png")
 
 
 # Upper left corner
-newImage = lab8Functions.makePIP(myImage, billy, 0, 0)
+newImage = f.makePIP(myImage, billy, 0, 0)
 
 # Upper right corner
-newImage = lab8Functions.makePIP(newImage,
+newImage = f.makePIP(newImage,
                                  billy,
                                  0,
-                                 newImage.getWidth() - billy.getWidth())
+                                 len(newImage[0]) - len(billy[0]))
 
 # Lower left corner
-newImage = lab8Functions.makePIP(newImage,
+newImage = f.makePIP(newImage,
                                  billy,
-                                 newImage.getHeight() - billy.getHeight(),
+                                 len(newImage) - len(billy),
                                  0)
 
 # Lower right corner
-newImage = lab8Functions.makePIP(newImage,
+newImage = f.makePIP(newImage,
                                  billy,
-                                 newImage.getHeight() - billy.getHeight(),
-                                 newImage.getWidth() - billy.getWidth())
+                                 len(newImage) - len(billy),
+                                 len(newImage[0]) - len(billy[0])
 
-lab8Functions.displayImage(newImage)
+f.displayImage(newImage)
