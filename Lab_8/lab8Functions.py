@@ -175,7 +175,7 @@ def makePIP(largeImage, smallImage, upperLeftRow, upperLeftCol):
             RNew = int(RSmall * ASmall / 255 + RLarge * ALarge / 255 * (255 - ASmall) / 255)
             GNew = int(GSmall * ASmall / 255 + GLarge * ALarge / 255 * (255 - ASmall) / 255)
             BNew = int(BSmall * ASmall / 255 + BLarge * ALarge / 255 * (255 - ASmall) / 255)
-            ANew = int(ASmall + ALarge * (255 - ASmall) / 255
+            ANew = int(ASmall + ALarge * (255 - ASmall) / 255)
 
             resultImage[r, c] = [RNew, GNew, BNew, ANew]
             
