@@ -165,8 +165,8 @@ def makePIP(largeImage, smallImage, upperLeftRow, upperLeftCol):
     resultImage = largeImage
 
     # Place the smaller image within the larger one
-    for r in range(upperLeftRow:upperLeftRow + len(smallImage))
-        for c in range(upperLeftCol:upperLeftCol + len(smallImage[0]))
+    for r in range(upperLeftRow, upperLeftRow + len(smallImage)):
+        for c in range(upperLeftCol, upperLeftCol + len(smallImage[0])):
             (rSmall, cSmall) = (r - upperLeftRow, c - upperLeftColumn)
             
             (RLarge, GLarge, BLarge, ALarge) = (largeImage[r, c, 0], largeImage[r, c, 1], largeImage[r, c, 2], largeImage[r, c, 3])
