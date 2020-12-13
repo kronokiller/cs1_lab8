@@ -30,7 +30,9 @@ def emptyImage(height, width):
     Return:
         ndarray of the specified size containing all zeros
     """
-    im = np.zeros((height, width, 3), dtype='uint8')
+    im = np.zeros((height, width, 4), dtype='uint8')
+    im[:, :, 3] = 255
+    
     return im
 
 def displayImage(image):
@@ -65,24 +67,9 @@ def makeDiagonal(size, desiredPixel):
 
     # Set pixels along the diagonal
     for i in range(size):
-        resultImage[i, i] = desiredPixel
+        resultImage[i, i, 0:3] = desiredPixel
 
     return resultImage
-
-
-def makeRectangle(width, height, desiredPixel):
-    """
-    Create a rectangular image of specified size and color
-
-    Arguments:
-        width: desired width, in pixels, of rectangle
-        height: desired height, in pixels, of rectangle
-        desiredPixel: color for each pixel in the rectangle
-
-    Returns:
-        a rectangle with the specified properties
-    """
-    return "Needs to be implemented"
 
 
 def makeLowerTriangle(size, desiredPixel):
@@ -101,7 +88,7 @@ def makeLowerTriangle(size, desiredPixel):
 
     resultImage = emptyImage(size, size)
     for i in range(size):
-        resultImage[i:,i] = desiredPixel
+        resultImage[i:,i, 0:3] = desiredPixel
 
     return resultImage
 
@@ -130,7 +117,7 @@ def makeBandedDiagonal(size, bandWidth, desiredPixel):
         if rightSide > size:
             rightSide = size
 
-        resultImage[i, leftSide:rightSide] = desiredPixel
+        resultImage[i, leftSide:rightSide, 0:3] = desiredPixel
 
     return resultImage
 
@@ -168,15 +155,30 @@ def makePIP(largeImage, smallImage, upperLeftRow, upperLeftCol):
         left corner of this small image appears at the given row and column.
     """
 
-    # Start with an empty image large enough to hold the result
-    # WHY?
+    if len(largeImage[0, 0]) == 3:
+        largeImage[:, :].append(255)
+        
+    if len(smallImage[0, 0]) == 3:
+        smallImage[:, :].append(255)
 
     # Make a copy of the large image
-    resultImage = largeImage[:, :, 3]
+    resultImage = largeImage
 
     # Place the smaller image within the larger one
-    resultImage[upperLeftRow:upperLeftRow + len(smallImage), upperLeftCol:upperLeftCol + len(smallImage[0])] = smallImage
+    for r in range(upperLeftRow, upperLeftRow + len(smallImage)):
+        for c in range(upperLeftCol, upperLeftCol + len(smallImage[0])):
+            (rSmall, cSmall) = (r - upperLeftRow, c - upperLeftColumn)
+            
+            (RLarge, GLarge, BLarge, ALarge) = (largeImage[r, c, 0], largeImage[r, c, 1], largeImage[r, c, 2], largeImage[r, c, 3])
+            (RSmall, GSmall, BSmall, ASmall) = (smallImage[rSmall, cSmall, 0], smallImage[rSmall, cSmall, 1], smallImage[rSmall, cSmall, 2], smallImage[rSmall, cSmall, 3])
+            
+            RNew = int(RSmall * ASmall / 255 + RLarge * ALarge / 255 * (255 - ASmall) / 255)
+            GNew = int(GSmall * ASmall / 255 + GLarge * ALarge / 255 * (255 - ASmall) / 255)
+            BNew = int(BSmall * ASmall / 255 + BLarge * ALarge / 255 * (255 - ASmall) / 255)
+            ANew = int(ASmall + ALarge * (255 - ASmall) / 255)
 
+            resultImage[r, c] = [RNew, GNew, BNew, ANew]
+            
     return resultImage
 
 
@@ -191,9 +193,9 @@ def displayFramedImage(image, frameSize, frameColor):
 
     Returns:
         None
-    """
-    resultImage = emptyImage(len(image) + 2 * frameSize, len(image[0] + 2 * framSize))
-    resultImage(:, :) = frameColor
+    """                       
+    resultImage = emptyImage(len(image) + 2 * frameSize, len(image[0]) + 2 * frameSize)
+    resultImage[:, :, 0:3] = frameColor
     resultImage = makePIP(resultImage, image, frameSize, frameSize)
     
     displayImage(resultImage)
@@ -211,7 +213,7 @@ def makeStackedImages(topImage, bottomImage):
         The graphics image formed by stacking the two images
     """
     resultImage = emptyImage(len(topImage) + len(bottomeImage), max(len(bottomImage), len(bottomImage)))
-    resultImage = makePIP(makePIP(resultImage, topImage, 0. 0), bottomImage, len(topImage), 0)
+    resultImage = makePIP(makePIP(resultImage, topImage, 0, 0), bottomImage, len(topImage), 0)
     
     return resultImage
 
@@ -237,8 +239,8 @@ def pixelMapper(image, rgbFunction):
     # Apply the given pixel function to each of the pixels in the image
     for row in range(height):
         for col in range(width):
-            resultImage[row, col] = \
-                rgbFunction(image[row,col])
+            resultImage[row, col, 0:3] = \
+                rgbFunction(image[row,col, 0:3])
 
     return resultImage
 
@@ -295,7 +297,10 @@ def sepiaPixel(oldPixel):
         The sepia tone version of the given pixel
 
     """
-    return "Needs to be implemented"
+        
+                       
+                       
+    return [, , ]
 
 def makeRectangle(h, w, c):
     """
@@ -311,7 +316,7 @@ def makeRectangle(h, w, c):
     """
 
     resultImage = emptyImage(h, w)
-    resultImage[:, :] = c
+    resultImage[:, :, 0:3] = c
 
     return resultImage
 
